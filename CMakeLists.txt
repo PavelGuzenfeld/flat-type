@@ -6,11 +6,8 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(MyLib_FUNCTIONS_DIR "${CMAKE_CURRENT_LIST_DIR}/cmake-library")
-list(APPEND CMAKE_MODULE_PATH ${MyLib_FUNCTIONS_DIR})
-include(${MyLib_FUNCTIONS_DIR}/library.cmake)
-
 # Find dependencies
+find_package(cmake-library REQUIRED)
 find_package(fmt REQUIRED)
 
 # executable and linking
