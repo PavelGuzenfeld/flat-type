@@ -6,8 +6,16 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Build utilities
+function(enable_sanitizers target)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+        target_compile_options(${target} PRIVATE -fsanitize=address,undefined,signed-integer-overflow,null,leak)
+        target_link_options(${target} PRIVATE -fsanitize=address,undefined,signed-integer-overflow,null,leak)
+    elseif(MSVC)
+    endif()
+endfunction()
+
 # Find dependencies
-find_package(cmake-library REQUIRED)
 find_package(fmt REQUIRED)
 
 # Create an INTERFACE library target for the header-only library.
