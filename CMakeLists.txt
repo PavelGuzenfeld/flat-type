@@ -7,7 +7,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Find dependencies
-find_package(cmake-library REQUIRED)
+# Debug options (replaces cmake-library dependency)
+macro(set_debug_options target)
+    target_compile_options(${target} PRIVATE
+        $<$<CONFIG:Debug>:-g -O0 -DDEBUG>
+    )
+endmacro()
+
+macro(enable_sanitizers target)
+    if(NOT DEFINED ENV{NO_SANITIZERS})
+        target_compile_options(${target} PRIVATE -fsanitize=address,undefined -fno-omit-frame-pointer)
+        target_link_options(${target} PRIVATE -fsanitize=address,undefined)
+    endif()
+endmacro()
 find_package(fmt REQUIRED)
 
 # Create an INTERFACE library target for the header-only library.
